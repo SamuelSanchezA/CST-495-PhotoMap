@@ -8,8 +8,14 @@
 
 import UIKit
 
+protocol LocationsViewControllerDelegate : class {
+    func locationsPickedLocation(controller: LocationsViewController, latitude: NSNumber, longitude: NSNumber)
+}
+
 class LocationsViewController: UIViewController, UITableViewDelegate, UITableViewDataSource, UISearchBarDelegate {
 
+    weak var delegate : LocationsViewControllerDelegate!
+    
     // TODO: Fill in actual CLIENT_ID and CLIENT_SECRET
     let CLIENT_ID = "CLIENT_ID GOES HERE"
     let CLIENT_SECRET = "CLIENT_SECRET GOES HERE"
@@ -17,6 +23,8 @@ class LocationsViewController: UIViewController, UITableViewDelegate, UITableVie
     @IBOutlet weak var tableView: UITableView!
     @IBOutlet weak var searchBar: UISearchBar!
 
+    var imageTaken : UIImage!
+    
     var results: NSArray = []
     
     override func viewDidLoad() {
