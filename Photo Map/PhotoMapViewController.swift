@@ -69,7 +69,7 @@ class PhotoMapViewController: UIViewController, UIImagePickerControllerDelegate,
         
         var annotationView = mapView.dequeueReusableAnnotationView(withIdentifier: reuseID)
         if (annotationView == nil) {
-            annotationView = MKPinAnnotationView(annotation: annotation, reuseIdentifier: reuseID)
+            annotationView = MKAnnotationView(annotation: annotation, reuseIdentifier: reuseID)
             annotationView!.canShowCallout = true
             annotationView!.leftCalloutAccessoryView = UIImageView(frame: CGRect(x:0, y:0, width: 50, height:50))
         }
@@ -93,7 +93,7 @@ class PhotoMapViewController: UIViewController, UIImagePickerControllerDelegate,
         
         annotationView?.rightCalloutAccessoryView = detailButton
         
-        
+        annotationView?.image = thumbnail
         
         return annotationView
     }
