@@ -25,7 +25,7 @@ class PhotoMapViewController: UIViewController, UIImagePickerControllerDelegate,
     
     var imageTaken : UIImage!
     var imagePickerController : UIImagePickerController!
-    
+    private static var selectedAnnotationImage : UIImage!
     override func viewDidLoad() {
         super.viewDidLoad()
         let sfRegion = MKCoordinateRegionMake(CLLocationCoordinate2DMake(37.783333, -122.416667),
@@ -88,7 +88,23 @@ class PhotoMapViewController: UIViewController, UIImagePickerControllerDelegate,
         let imageView = annotationView?.leftCalloutAccessoryView as! UIImageView
         imageView.image = thumbnail
         
+        let detailButton = UIButton(type: .detailDisclosure)
+        detailButton.addTarget(self, action: #selector(fullsizeImage(_:)), for: .touchUpInside)
+        
+        annotationView?.rightCalloutAccessoryView = detailButton
+        
+        
+        
         return annotationView
+    }
+    
+    func mapView(_ mapView: MKMapView, annotationView view: MKAnnotationView, calloutAccessoryControlTapped control: UIControl) {
+        //PhotoMapViewController.selectedAnnotationImage = (mapView.selectedAnnotations[0] as! PhotoAnnotation).photo
+        performSegue(withIdentifier: "fullImageSegue", sender: (mapView.selectedAnnotations[0] as! PhotoAnnotation).photo)
+    }
+    
+    @objc func fullsizeImage(_ sender: Any){
+        //performSegue(withIdentifier: "fullImageSegue", sender: nil)
     }
     
     @IBAction func openCamera(_ sender: Any) {
@@ -99,8 +115,6 @@ class PhotoMapViewController: UIViewController, UIImagePickerControllerDelegate,
                                didFinishPickingMediaWithInfo info: [String : Any]) {
         // Get the image captured by the UIImagePickerController
         let originalImage = info[UIImagePickerControllerOriginalImage] as! UIImage
-        
-        //let editedImage = info[UIImagePickerControllerEditedImage] as! UIImage
         
         // Do something with the images (based on your use case)
         
@@ -129,8 +143,12 @@ class PhotoMapViewController: UIViewController, UIImagePickerControllerDelegate,
         // Pass the selected object to the new view controller.
         if(segue.identifier == "tagSegue"){
             let destVC = segue.destination as! LocationsViewController
-            destVC.imageTaken = self.imageTaken
+            destVC.selectedPhoto = imageTaken
             destVC.delegate = self
+        }
+        else if(segue.identifier == "fullImageSegue"){
+            let destVC = segue.destination as! FullImageViewController
+            destVC.photo = sender as! UIImage
         }
     }
     

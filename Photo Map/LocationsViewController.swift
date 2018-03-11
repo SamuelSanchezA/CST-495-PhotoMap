@@ -22,11 +22,9 @@ class LocationsViewController: UIViewController, UITableViewDelegate, UITableVie
 
     @IBOutlet weak var tableView: UITableView!
     @IBOutlet weak var searchBar: UISearchBar!
-
-    var imageTaken : UIImage!
     
     var results: NSArray = []
-    
+    var selectedPhoto : UIImage!
     override func viewDidLoad() {
         super.viewDidLoad()
 
@@ -63,7 +61,7 @@ class LocationsViewController: UIViewController, UITableViewDelegate, UITableVie
         let lngString = "\(lng)"
 
         print(latString + " " + lngString)
-        delegate.locationsPickedLocation(controller: self, latitude: lat, longitude: lng, photo: imageTaken)
+        delegate.locationsPickedLocation(controller: self, latitude: lat, longitude: lng, photo: selectedPhoto)
     }
     
     func searchBar(_ searchBar: UISearchBar, shouldChangeTextIn range: NSRange, replacementText text: String) -> Bool {
